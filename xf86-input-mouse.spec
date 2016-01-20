@@ -4,12 +4,13 @@
 #
 Name     : xf86-input-mouse
 Version  : 1.9.1
-Release  : 5
+Release  : 6
 URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.1.tar.gz
 Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.1.tar.gz
 Summary  : X.Org mouse input driver for non-evdev OS'es
 Group    : Development/Tools
-License  : MIT
+License  : HPND
+Requires: xf86-input-mouse-lib
 Requires: xf86-input-mouse-doc
 BuildRequires : pkgconfig(xorg-macros)
 BuildRequires : pkgconfig(xorg-server)
@@ -23,6 +24,8 @@ ____________________________________________________________
 %package dev
 Summary: dev components for the xf86-input-mouse package.
 Group: Development
+Requires: xf86-input-mouse-lib
+Provides: xf86-input-mouse-devel
 
 %description dev
 dev components for the xf86-input-mouse package.
@@ -36,14 +39,25 @@ Group: Documentation
 doc components for the xf86-input-mouse package.
 
 
+%package lib
+Summary: lib components for the xf86-input-mouse package.
+Group: Libraries
+
+%description lib
+lib components for the xf86-input-mouse package.
+
+
 %prep
 %setup -q -n xf86-input-mouse-1.9.1
 
 %build
 %configure --disable-static
-make V=1 %{?_smp_mflags}
+make V=1  %{?_smp_mflags}
 
 %check
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
@@ -52,7 +66,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-/usr/lib64/xorg/modules/input/mouse_drv.so
 
 %files dev
 %defattr(-,root,root,-)
@@ -62,3 +75,7 @@ rm -rf %{buildroot}
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/man/man4/*
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/xorg/modules/input/mouse_drv.so
