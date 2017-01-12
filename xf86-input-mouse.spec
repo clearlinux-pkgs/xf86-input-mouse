@@ -4,7 +4,7 @@
 #
 Name     : xf86-input-mouse
 Version  : 1.9.2
-Release  : 13
+Release  : 14
 URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.2.tar.gz
 Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.2.tar.gz
 Summary  : X.Org mouse input driver for non-evdev OS'es
