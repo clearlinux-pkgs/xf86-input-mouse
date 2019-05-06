@@ -6,16 +6,16 @@
 #
 Name     : xf86-input-mouse
 Version  : 1.9.3
-Release  : 27
+Release  : 28
 URL      : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.3.tar.gz
 Source0  : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.3.tar.gz
 Source99 : http://xorg.freedesktop.org/releases/individual/driver/xf86-input-mouse-1.9.3.tar.gz.sig
-Summary  : X.Org mouse input driver for non-evdev OS'es
+Summary  : X.org mouse input driver
 Group    : Development/Tools
 License  : HPND
-Requires: xf86-input-mouse-lib
-Requires: xf86-input-mouse-license
-Requires: xf86-input-mouse-man
+Requires: xf86-input-mouse-lib = %{version}-%{release}
+Requires: xf86-input-mouse-license = %{version}-%{release}
+Requires: xf86-input-mouse-man = %{version}-%{release}
 BuildRequires : pkgconfig(inputproto)
 BuildRequires : pkgconfig(xorg-macros)
 BuildRequires : pkgconfig(xorg-server)
@@ -32,6 +32,7 @@ Summary: dev components for the xf86-input-mouse package.
 Group: Development
 Requires: xf86-input-mouse-lib = %{version}-%{release}
 Provides: xf86-input-mouse-devel = %{version}-%{release}
+Requires: xf86-input-mouse = %{version}-%{release}
 
 %description dev
 dev components for the xf86-input-mouse package.
@@ -70,9 +71,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538856557
+export SOURCE_DATE_EPOCH=1557105087
 export CFLAGS="-O3 -g -fopt-info-vec "
 unset LDFLAGS
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -84,10 +92,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1538856557
+export SOURCE_DATE_EPOCH=1557105087
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/xf86-input-mouse
-cp COPYING %{buildroot}/usr/share/doc/xf86-input-mouse/COPYING
+mkdir -p %{buildroot}/usr/share/package-licenses/xf86-input-mouse
+cp COPYING %{buildroot}/usr/share/package-licenses/xf86-input-mouse/COPYING
 %make_install
 
 %files
@@ -104,7 +112,7 @@ cp COPYING %{buildroot}/usr/share/doc/xf86-input-mouse/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/doc/xf86-input-mouse/COPYING
+/usr/share/package-licenses/xf86-input-mouse/COPYING
 
 %files man
 %defattr(0644,root,root,0755)
